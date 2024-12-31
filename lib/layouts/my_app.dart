@@ -6,13 +6,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:expense_tracker/providers/global_state_provider.dart';
 
 class MyApp extends ConsumerWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, this.childWidget});
+
+  final Widget? childWidget;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Watch the current state of the global state
     final globalState = ref.watch(globalStateNotifierProvider);
-    // Get access to the GlobalStateNotifier to modify the state
     final globalStateNotifier = ref.read(globalStateNotifierProvider.notifier);
 
     globalStateNotifier.loadInitialState();
@@ -50,21 +50,20 @@ class MyApp extends ConsumerWidget {
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Center(
-            child: SingleChildScrollView(
-              child: Container(
-                constraints: BoxConstraints(maxWidth: 600),
-                decoration: BoxDecoration(
-                  color: globalState['isLight']
-                      ? lightColorScheme.primary
-                      : darkColorScheme.primary,
-                  borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                ),
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 32.0, vertical: 16.0),
-                child: screenInfo[globalState['status']]
-                        ?[globalState['selectedTabIndex']]['widget'] ??
-                    Home(),
+            child: Container(
+              constraints: BoxConstraints(maxWidth: 600),
+              decoration: BoxDecoration(
+                color: globalState['isLight']
+                    ? lightColorScheme.primary
+                    : darkColorScheme.primary,
+                borderRadius: BorderRadius.all(Radius.circular(16.0)),
               ),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32.0),
+              child: (childWidget ??
+                  (screenInfo[globalState['status']]
+                          ?[globalState['selectedTabIndex']]['widget'] ??
+                      Home())),
             ),
           ),
         ),
