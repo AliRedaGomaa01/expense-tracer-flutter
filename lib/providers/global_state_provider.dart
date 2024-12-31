@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,14 +16,15 @@ class GlobalStateNotifier extends StateNotifier<Map<String, dynamic>> {
       'success': "",
       'error': "",
     },
+    'status': 'guest',
+    'selectedTabIndex': 0,
+    'isLight': false,
   };
 
   Future<void> loadInitialState() async {
     final prefs = await SharedPreferences.getInstance();
 
     final String? auth = prefs.getString('auth');
-
-    print(auth);
 
     final Map authMap = auth != null
         ? jsonDecode(auth)
