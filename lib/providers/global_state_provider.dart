@@ -1,16 +1,14 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
+import 'package:expense_tracker/utilities/sqflite_helper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-// Define a class to manage state with custom logic.
 class GlobalStateNotifier extends StateNotifier<Map<String, dynamic>> {
   GlobalStateNotifier() : super(_initialState);
 
   static final Map<String, dynamic> _initialState = {
     'auth': {
-      'token': {},
-      'user': {},
+      'token': <String, dynamic>{},
+      'user': <String, dynamic>{},
     },
     'flashMsg': {
       'success': "",
@@ -22,33 +20,21 @@ class GlobalStateNotifier extends StateNotifier<Map<String, dynamic>> {
   };
 
   Future<void> loadInitialState() async {
-    final prefs = await SharedPreferences.getInstance();
+    final db = KeyValueDatabase();
+    final String? cachedGlobalState = await db.getValue('globalState');
 
-    final String? auth = prefs.getString('auth');
-
-    final Map authMap = auth != null
-        ? jsonDecode(auth)
-        : {
-            'token': {},
-            'user': {},
-          };
-
-    state = {
-      ...state,
-      'auth': authMap,
-    };
+    state =
+        cachedGlobalState != null ? jsonDecode(cachedGlobalState) : {...state};
   }
 
   Future<void> updateGlobalState(Map<String, dynamic> newState) async {
     state = {...state, ...newState};
 
-    final prefs = await SharedPreferences.getInstance();
-
-    prefs.setString('auth', jsonEncode(state['auth']));
+    final db = KeyValueDatabase();
+    await db.setValue('globalState', jsonEncode(state));
   }
 }
 
-// Define a provider for the GlobalStateNotifier.
 final globalStateNotifierProvider =
     StateNotifierProvider<GlobalStateNotifier, Map<String, dynamic>>(
   (ref) => GlobalStateNotifier(),
