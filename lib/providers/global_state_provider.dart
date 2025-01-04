@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:expense_tracker/utilities/sqflite_helper.dart';
+import 'package:expense_tracker/utils/sqflite_helper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class GlobalStateNotifier extends StateNotifier<Map<String, dynamic>> {
@@ -33,9 +33,27 @@ class GlobalStateNotifier extends StateNotifier<Map<String, dynamic>> {
     final db = KeyValueDatabase();
     await db.setValue('globalState', jsonEncode(state));
   }
+
+  Future<void> logout() async {
+    updateGlobalState({
+      'auth': {
+        'token': {},
+        'user': {},
+      },
+      'status': 'guest',
+      'selectedTabIndex': 0,
+    });
+  }
 }
 
 final globalStateNotifierProvider =
     StateNotifierProvider<GlobalStateNotifier, Map<String, dynamic>>(
   (ref) => GlobalStateNotifier(),
 );
+
+/*
+    // Watch the current state of the global state
+    final globalState = ref.watch(globalStateNotifierProvider);
+    // Get access to the GlobalStateNotifier to modify the state
+    final globalStateNotifier = ref.read(globalStateNotifierProvider.notifier);
+*/

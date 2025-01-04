@@ -6,9 +6,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:expense_tracker/providers/global_state_provider.dart';
 
 class MyApp extends ConsumerWidget {
-  const MyApp({super.key, this.childWidget});
+  const MyApp(
+      {super.key,
+      this.childWidget,
+      this.childWidgetTitle,
+      this.childWidgetContext});
 
   final Widget? childWidget;
+  final String? childWidgetTitle;
+  final dynamic childWidgetContext;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,9 +30,17 @@ class MyApp extends ConsumerWidget {
       themeMode: globalState['isLight'] ? ThemeMode.light : ThemeMode.dark,
       home: Scaffold(
         appBar: AppBar(
+          leading: (childWidgetTitle != null
+              ? IconButton(
+                  onPressed: () => Navigator.of(childWidgetContext).pop(),
+                  icon: Icon(Icons.arrow_back_ios_new,
+                      color:
+                          globalState['isLight'] ? Colors.black : Colors.white))
+              : null),
           title: Text(
-            screenInfo[globalState['status']]?[globalState['selectedTabIndex']]
-                    ['label'] ??
+            childWidgetTitle ??
+                screenInfo[globalState['status']]
+                    ?[globalState['selectedTabIndex']]['label'] ??
                 'Expense Tracker',
             style: TextStyle(
               color: globalState['isLight'] ? Colors.black : Colors.white,
@@ -67,7 +81,7 @@ class MyApp extends ConsumerWidget {
             ),
           ),
         ),
-        bottomNavigationBar: NavItems(),
+        bottomNavigationBar: childWidgetTitle == null ? NavItems() : null,
       ),
     );
   }

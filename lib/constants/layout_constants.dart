@@ -1,8 +1,8 @@
 import 'package:expense_tracker/screens/expense/expense.dart';
 import 'package:expense_tracker/screens/home/home.dart';
-import 'package:expense_tracker/screens/login/login.dart';
+import 'package:expense_tracker/screens/auth/login/login.dart';
 import 'package:expense_tracker/screens/profile/profile.dart';
-import 'package:expense_tracker/screens/register/register.dart';
+import 'package:expense_tracker/screens/auth/register/register.dart';
 import 'package:flutter/material.dart';
 
 const Map<String, dynamic> home = {
@@ -42,7 +42,7 @@ const Map<String, List<Map<String, dynamic>>> screenInfo = {
 
 const lightColorScheme = ColorScheme(
   brightness: Brightness.light,
-  primary: Color.fromARGB(255, 127, 205, 250),
+  primary: Color.fromARGB(255, 154, 218, 254),
   onPrimary: Colors.white,
   secondary: Color.fromARGB(255, 221, 235, 247),
   onSecondary: Colors.white,
@@ -71,6 +71,13 @@ const darkColorScheme = ColorScheme(
 final lightTheme = ThemeData(
   colorScheme: lightColorScheme,
   useMaterial3: true, // Optional: Use Material 3 design
+  textTheme: TextTheme(
+    bodyMedium: TextStyle(
+        color: lightColorScheme.onSurface, fontSize: 16), // For general text
+  ),
+  iconTheme: IconThemeData(
+    color: lightColorScheme.onSurface,
+  ),
   appBarTheme: AppBarTheme(
     backgroundColor: lightColorScheme.primary,
     foregroundColor: lightColorScheme.onPrimary,
@@ -80,6 +87,13 @@ final lightTheme = ThemeData(
 final darkTheme = ThemeData(
   colorScheme: darkColorScheme,
   useMaterial3: true, // Optional: Use Material 3 design
+  textTheme: TextTheme(
+    bodyMedium: TextStyle(
+        color: darkColorScheme.onSurface, fontSize: 16), // For general text
+  ),
+  iconTheme: IconThemeData(
+    color: darkColorScheme.onSurface,
+  ),
   appBarTheme: AppBarTheme(
     backgroundColor: darkColorScheme.primary,
     foregroundColor: darkColorScheme.onPrimary,
