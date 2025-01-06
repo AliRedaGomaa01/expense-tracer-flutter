@@ -84,103 +84,100 @@ class RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: EdgeInsets.all(16.0),
-      child: Consumer(builder: (context, ref, child) {
-        final globalStateNotifier =
-            ref.read(globalStateNotifierProvider.notifier);
-
-        return Center(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  'Register a new account',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    return Consumer(builder: (context, ref, child) {
+      final globalStateNotifier =
+          ref.read(globalStateNotifierProvider.notifier);
+    
+      return Center(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'Register a new account',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 16),
+              buildErrorText(_errors['form']?.join(', ')),
+              TextFormField(
+                controller: nameController,
+                decoration: InputDecoration(
+                  hintText: 'Enter your name',
+                  labelText: 'Name',
+                  errorText: _errors['name']?.join(', '),
                 ),
-                SizedBox(height: 16),
-                buildErrorText(_errors['form']?.join(', ')),
-                TextFormField(
-                  controller: nameController,
-                  decoration: InputDecoration(
-                    hintText: 'Enter your name',
-                    labelText: 'Name',
-                    errorText: _errors['name']?.join(', '),
+                validator: (value) =>
+                    value?.isEmpty == true ? 'Name is required' : null,
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                controller: emailController,
+                decoration: InputDecoration(
+                  hintText: 'Enter your email address',
+                  labelText: 'Email',
+                  errorText: _errors['email']?.join(', '),
+                ),
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  if (value?.isEmpty == true) return 'Email is required';
+                  if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value!)) {
+                    return 'Invalid email address';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                controller: passwordController,
+                obscureText: !_showPassword,
+                decoration: InputDecoration(
+                  hintText: 'Enter your password',
+                  labelText: 'Password',
+                  errorText: _errors['password']?.join(', '),
+                  suffixIcon: IconButton(
+                    icon: Icon(_showPassword
+                        ? Icons.visibility_off
+                        : Icons.visibility),
+                    onPressed: () =>
+                        setState(() => _showPassword = !_showPassword),
                   ),
-                  validator: (value) =>
-                      value?.isEmpty == true ? 'Name is required' : null,
                 ),
-                SizedBox(height: 16),
-                TextFormField(
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    hintText: 'Enter your email address',
-                    labelText: 'Email',
-                    errorText: _errors['email']?.join(', '),
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value?.isEmpty == true) return 'Email is required';
-                    if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value!)) {
-                      return 'Invalid email address';
-                    }
-                    return null;
-                  },
+                validator: (value) =>
+                    value?.isEmpty == true ? 'Password is required' : null,
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                controller: confirmPasswordController,
+                obscureText: !_showPassword,
+                decoration: InputDecoration(
+                  hintText: 'Re-enter your password',
+                  labelText: 'Confirm Password',
+                  errorText: _errors['password_confirmation']?.join(', '),
                 ),
-                SizedBox(height: 16),
-                TextFormField(
-                  controller: passwordController,
-                  obscureText: !_showPassword,
-                  decoration: InputDecoration(
-                    hintText: 'Enter your password',
-                    labelText: 'Password',
-                    errorText: _errors['password']?.join(', '),
-                    suffixIcon: IconButton(
-                      icon: Icon(_showPassword
-                          ? Icons.visibility_off
-                          : Icons.visibility),
-                      onPressed: () =>
-                          setState(() => _showPassword = !_showPassword),
-                    ),
-                  ),
-                  validator: (value) =>
-                      value?.isEmpty == true ? 'Password is required' : null,
-                ),
-                SizedBox(height: 16),
-                TextFormField(
-                  controller: confirmPasswordController,
-                  obscureText: !_showPassword,
-                  decoration: InputDecoration(
-                    hintText: 'Re-enter your password',
-                    labelText: 'Confirm Password',
-                    errorText: _errors['password_confirmation']?.join(', '),
-                  ),
-                  validator: (value) {
-                    if (value?.isEmpty == true) {
-                      return 'Please confirm your password';
-                    }
-                    if (value != passwordController.text) {
-                      return 'Passwords do not match';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 24),
-                PrimaryButton(
-                  buttonText: 'Register',
-                  buttonIcon: Icons.app_registration_outlined,
-                  buttonOnPressed: () =>
-                      _handleSubmit(context, globalStateNotifier),
-                  isSubmitting: _isSubmitting,
-                ),
-              ],
-            ),
+                validator: (value) {
+                  if (value?.isEmpty == true) {
+                    return 'Please confirm your password';
+                  }
+                  if (value != passwordController.text) {
+                    return 'Passwords do not match';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 24),
+              PrimaryButton(
+                buttonText: 'Register',
+                buttonIcon: Icons.app_registration_outlined,
+                buttonOnPressed: () =>
+                    _handleSubmit(context, globalStateNotifier),
+                isSubmitting: _isSubmitting,
+              ),
+            ],
           ),
-        );
-      }),
-    );
+        ),
+      );
+    });
   }
 }

@@ -91,116 +91,104 @@ class LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Center(
-        child: Consumer(
-          builder: (context, ref, child) {
-            final globalStateNotifier =
-                ref.read(globalStateNotifierProvider.notifier);
+    return Consumer(
+      builder: (context, ref, child) {
+        final globalStateNotifier =
+            ref.read(globalStateNotifierProvider.notifier);
 
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      'Login to Your Account',
-                      textAlign: TextAlign.center,
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        return Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'Login to Your Account',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 16),
+              buildErrorText(errors['form']?.join(', ')),
+              TextFormField(
+                controller: emailController,
+                onChanged: (_) => handleChange(),
+                decoration: InputDecoration(
+                  hintText: 'Enter your email',
+                  labelText: 'Email',
+                  errorText: errors['email']?.join(', '),
+                ),
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) => (value?.isEmpty == true
+                    ? 'Email is required'
+                    : (!RegExp(r'\S+@\S+\.\S+').hasMatch(value ?? 'a@a.a')
+                        ? 'Not valid email'
+                        : null)),
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: passwordController,
+                onChanged: (_) => handleChange(),
+                obscureText: !showPassword,
+                decoration: InputDecoration(
+                  hintText: 'Enter your password',
+                  labelText: 'Password',
+                  errorText: errors['password']?.join(', '),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                        showPassword ? Icons.visibility : Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        showPassword = !showPassword;
+                      });
+                    },
+                  ),
+                ),
+                validator: (value) =>
+                    value?.isEmpty == true ? 'Password is required' : null,
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Checkbox(
+                    value: emailController.text == 'test@aly-h.com' &&
+                        passwordController.text == 'Test123\$\$',
+                    onChanged: (value) => fillTestData(value ?? false),
+                    activeColor: Colors.white,
+                    checkColor: Colors.black,
+                    tristate: emailController.text == 'test@aly-h.com',
+                  ),
+                  const SizedBox(width: 8),
+                  Flexible(
+                    child: Text(
+                      'For Test Only? (* Recommended to register to avoid data issues caused by other testers sharing the same test account.)',
+                      style: TextStyle(fontSize: 14, color: Colors.red),
                     ),
-                    SizedBox(height: 16),
-                    buildErrorText(errors['form']?.join(', ')),
-                    TextFormField(
-                      controller: emailController,
-                      onChanged: (_) => handleChange(),
-                      decoration: InputDecoration(
-                        hintText: 'Enter your email',
-                        labelText: 'Email',
-                        errorText: errors['email']?.join(', '),
-                      ),
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (value) => (value?.isEmpty == true
-                          ? 'Email is required'
-                          : (!RegExp(r'\S+@\S+\.\S+').hasMatch(value ?? 'a@a.a')
-                              ? 'Not valid email'
-                              : null)),
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: passwordController,
-                      onChanged: (_) => handleChange(),
-                      obscureText: !showPassword,
-                      decoration: InputDecoration(
-                        hintText: 'Enter your password',
-                        labelText: 'Password',
-                        errorText: errors['password']?.join(', '),
-                        suffixIcon: IconButton(
-                          icon: Icon(showPassword
-                              ? Icons.visibility
-                              : Icons.visibility_off),
-                          onPressed: () {
-                            setState(() {
-                              showPassword = !showPassword;
-                            });
-                          },
-                        ),
-                      ),
-                      validator: (value) => value?.isEmpty == true
-                          ? 'Password is required'
-                          : null,
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Checkbox(
-                          value: emailController.text == 'test@aly-h.com' &&
-                              passwordController.text == 'Test123\$\$',
-                          onChanged: (value) => fillTestData(value ?? false),
-                          activeColor: Colors.white,
-                          checkColor: Colors.black,
-                          tristate: emailController.text == 'test@aly-h.com',
-                        ),
-                        const SizedBox(width: 8),
-                        Flexible(
-                          child: Text(
-                            'For Test Only? (* Recommended to register to avoid data issues caused by other testers sharing the same test account.)',
-                            style: TextStyle(fontSize: 14, color: Colors.red),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    GestureDetector(
-                      onTap: () => Navigator.push(context,
-                          MaterialPageRoute(builder: (_) {
-                        return ForgotPassword();
-                      })),
-                      child: Text(
-                        'Forgot the password?',
-                        style: TextStyle(
-                            color: const Color.fromARGB(255, 19, 99, 165),
-                            decoration: TextDecoration.underline),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    PrimaryButton(
-                      buttonText: 'Login',
-                      buttonIcon: Icons.login,
-                      buttonOnPressed: () => handleSubmit(globalStateNotifier),
-                      isSubmitting: isSubmitting,
-                    ),
-                  ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              GestureDetector(
+                onTap: () =>
+                    Navigator.push(context, MaterialPageRoute(builder: (_) {
+                  return ForgotPassword();
+                })),
+                child: Text(
+                  'Forgot the password?',
+                  style: TextStyle(
+                      color: const Color.fromARGB(255, 19, 99, 165),
+                      decoration: TextDecoration.underline),
                 ),
               ),
-            );
-          },
-        ),
-      ),
+              const SizedBox(height: 16),
+              PrimaryButton(
+                buttonText: 'Login',
+                buttonIcon: Icons.login,
+                buttonOnPressed: () => handleSubmit(globalStateNotifier),
+                isSubmitting: isSubmitting,
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

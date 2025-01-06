@@ -74,82 +74,75 @@ class ForgotPasswordState extends State<ForgotPassword> {
     return MyApp(
       childWidgetTitle: 'Forgot Password',
       childWidgetContext: context,
-      childWidget: SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'Forgot Password',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 24),
-                  if (_errors.containsKey('form'))
-                    InputError(errors: _errors['form']!),
-                  Text(
-                    'Enter your email address to get an email containing a token to reset your password.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  SizedBox(height: 16),
-                  TextFormField(
-                    controller: emailController,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      hintText: 'Enter your email',
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Email is required.';
-                      }
-                      if (!RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$')
-                          .hasMatch(value)) {
-                        return 'Please enter a valid email.';
-                      }
-                      return null;
-                    },
-                  ),
-                  if (_errors.containsKey('email'))
-                    InputError(errors: _errors['email']!),
-                  SizedBox(height: 16),
-                  if (!_successMessage.isNotEmpty)
-                    PrimaryButton(
-                      buttonText: 'Send Email',
-                      buttonIcon: Icons.email,
-                      buttonOnPressed:
-                          _isSubmitting ? () {} : () => _handleSubmit(),
-                      isSubmitting: _isSubmitting,
-                    ),
-                  SizedBox(height: 16),
-                  if (_successMessage.isNotEmpty)
-                    SecondaryButton(
-                      buttonText: 'Click if you have received email',
-                      buttonIcon: Icons.link,
-                      buttonOnPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ResetPassword()));
-                      },
-                      isSubmitting: _isSubmitting,
-                    ),
-                  if (_successMessage.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: Text(
-                        _successMessage,
-                        style: TextStyle(color: Colors.green),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                ],
-              ),
+      childWidget: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'Forgot Password',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-          ),
+            SizedBox(height: 24),
+            if (_errors.containsKey('form'))
+              InputError(errors: _errors['form']!),
+            Text(
+              'Enter your email address to get an email containing a token to reset your password.',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(height: 16),
+            TextFormField(
+              controller: emailController,
+              decoration: InputDecoration(
+                labelText: 'Email',
+                hintText: 'Enter your email',
+              ),
+              keyboardType: TextInputType.emailAddress,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Email is required.';
+                }
+                if (!RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$')
+                    .hasMatch(value)) {
+                  return 'Please enter a valid email.';
+                }
+                return null;
+              },
+            ),
+            if (_errors.containsKey('email'))
+              InputError(errors: _errors['email']!),
+            SizedBox(height: 16),
+            if (!_successMessage.isNotEmpty)
+              PrimaryButton(
+                buttonText: 'Send Email',
+                buttonIcon: Icons.email,
+                buttonOnPressed:
+                    _isSubmitting ? () {} : () => _handleSubmit(),
+                isSubmitting: _isSubmitting,
+              ),
+            SizedBox(height: 16),
+            if (_successMessage.isNotEmpty)
+              SecondaryButton(
+                buttonText: 'Click if you have received email',
+                buttonIcon: Icons.link,
+                buttonOnPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ResetPassword()));
+                },
+                isSubmitting: _isSubmitting,
+              ),
+            if (_successMessage.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: Text(
+                  _successMessage,
+                  style: TextStyle(color: Colors.green),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+          ],
         ),
       ),
     );

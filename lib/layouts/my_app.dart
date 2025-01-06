@@ -61,23 +61,34 @@ class MyApp extends ConsumerWidget {
             )
           ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Center(
-            child: Container(
-              constraints: BoxConstraints(maxWidth: 600),
-              decoration: BoxDecoration(
-                color: globalState['isLight']
-                    ? lightColorScheme.primary
-                    : darkColorScheme.primary,
-                borderRadius: BorderRadius.all(Radius.circular(16.0)),
-              ),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32.0),
-              child: (childWidget ??
-                  (screenInfo[globalState['status']]
-                          ?[globalState['selectedTabIndex']]['widget'] ??
-                      Home())),
+        body: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: 32),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Center(
+                    child: Container(
+                      constraints: BoxConstraints(maxWidth: 600),
+                      decoration: BoxDecoration(
+                        color: globalState['isLight']
+                            ? lightColorScheme.primary
+                            : darkColorScheme.primary,
+                        borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                      ),
+                      padding: const EdgeInsets.all(32.0),
+                      child: (childWidget ??
+                          (screenInfo[globalState['status']]
+                                      ?[globalState['selectedTabIndex']]
+                                  ['widget'] ??
+                              Home())),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 32),
+              ],
             ),
           ),
         ),

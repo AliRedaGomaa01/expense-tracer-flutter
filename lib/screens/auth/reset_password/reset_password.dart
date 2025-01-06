@@ -95,118 +95,113 @@ class ResetPasswordState extends State<ResetPassword> {
     return MyApp(
       childWidgetTitle: 'Reset Password',
       childWidgetContext: context,
-      childWidget: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
-        child: Center(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  'Reset Password',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 24),
-                if (_errors.containsKey('form'))
-                  InputError(errors: _errors['form']!),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    hintText: 'Enter your email',
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Email is required';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 16),
-                TextFormField(
-                  controller: _tokenController,
-                  decoration: InputDecoration(
-                    labelText: 'Token',
-                    hintText: 'Enter the token sent to your email',
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Token is required';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 16),
-                TextFormField(
-                  controller: _passwordController,
-                  obscureText: !_passwordVisible,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    hintText: 'Enter a strong password',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _passwordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _passwordVisible = !_passwordVisible;
-                        });
-                      },
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Password is required';
-                    }
-                    final passwordErrors = validatePassword(
-                        password: value,
-                        passwordConfirmation:
-                            _passwordConfirmationController.text);
-                    if (passwordErrors.isNotEmpty) {
-                      return passwordErrors.join('\n');
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 16),
-                TextFormField(
-                  controller: _passwordConfirmationController,
-                  obscureText: !_passwordVisible,
-                  decoration: InputDecoration(
-                    labelText: 'Confirm Password',
-                    hintText: 'Re-enter the password',
-                  ),
-                  validator: (value) {
-                    if (value != _passwordController.text) {
-                      return 'The password confirmation does not match';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 24),
-                PrimaryButton(
-                  buttonText: 'Reset Password',
-                  buttonIcon: Icons.done,
-                  buttonOnPressed:
-                      _isSubmitting ? () {} : () => _handleSubmit(context),
-                  isSubmitting: _isSubmitting,
-                ),
-                if (_successMessage != null)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
-                    child: Text(
-                      _successMessage!,
-                      style: TextStyle(color: Colors.green),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-              ],
+      childWidget: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'Reset Password',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-          ),
+            SizedBox(height: 24),
+            if (_errors.containsKey('form'))
+              InputError(errors: _errors['form']!),
+            TextFormField(
+              controller: _emailController,
+              decoration: InputDecoration(
+                labelText: 'Email',
+                hintText: 'Enter your email',
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Email is required';
+                }
+                return null;
+              },
+            ),
+            SizedBox(height: 16),
+            TextFormField(
+              controller: _tokenController,
+              decoration: InputDecoration(
+                labelText: 'Token',
+                hintText: 'Enter the token sent to your email',
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Token is required';
+                }
+                return null;
+              },
+            ),
+            SizedBox(height: 16),
+            TextFormField(
+              controller: _passwordController,
+              obscureText: !_passwordVisible,
+              decoration: InputDecoration(
+                labelText: 'Password',
+                hintText: 'Enter a strong password',
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _passwordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _passwordVisible = !_passwordVisible;
+                    });
+                  },
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Password is required';
+                }
+                final passwordErrors = validatePassword(
+                    password: value,
+                    passwordConfirmation:
+                        _passwordConfirmationController.text);
+                if (passwordErrors.isNotEmpty) {
+                  return passwordErrors.join('\n');
+                }
+                return null;
+              },
+            ),
+            SizedBox(height: 16),
+            TextFormField(
+              controller: _passwordConfirmationController,
+              obscureText: !_passwordVisible,
+              decoration: InputDecoration(
+                labelText: 'Confirm Password',
+                hintText: 'Re-enter the password',
+              ),
+              validator: (value) {
+                if (value != _passwordController.text) {
+                  return 'The password confirmation does not match';
+                }
+                return null;
+              },
+            ),
+            SizedBox(height: 24),
+            PrimaryButton(
+              buttonText: 'Reset Password',
+              buttonIcon: Icons.done,
+              buttonOnPressed:
+                  _isSubmitting ? () {} : () => _handleSubmit(context),
+              isSubmitting: _isSubmitting,
+            ),
+            if (_successMessage != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: Text(
+                  _successMessage!,
+                  style: TextStyle(color: Colors.green),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+          ],
         ),
       ),
     );

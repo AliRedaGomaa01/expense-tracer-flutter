@@ -74,6 +74,7 @@ final lightTheme = ThemeData(
   textTheme: TextTheme(
     bodyMedium: TextStyle(
         color: lightColorScheme.onSurface, fontSize: 16), // For general text
+    bodyLarge: TextStyle(color: lightColorScheme.onSurface, fontSize: 20),
   ),
   iconTheme: IconThemeData(
     color: lightColorScheme.onSurface,
