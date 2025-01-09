@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
-class PrimaryButton extends StatelessWidget {
-  const PrimaryButton({
+class DangerButton extends StatelessWidget {
+  const DangerButton({
     super.key,
     this.isSubmitting = false,
-    this.buttonColor,
     required this.buttonIcon,
     required this.buttonText,
     required this.buttonOnPressed,
@@ -13,7 +12,6 @@ class PrimaryButton extends StatelessWidget {
   final IconData? buttonIcon;
   final String buttonText;
   final bool isSubmitting;
-  final Color? buttonColor;
   final Function() buttonOnPressed;
 
   @override
@@ -30,17 +28,17 @@ class PrimaryButton extends StatelessWidget {
         children: [
           Icon(
             buttonIcon,
-            color: Colors.black,
+            color: Colors.white,
           ),  
           SizedBox(width: 8),
           Text(
             isSubmitting ? 'Processing...' : buttonText,
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.white),
           ),
         ],
       ),
       style: ButtonStyle(
-        backgroundColor: WidgetStatePropertyAll( buttonColor ?? Colors.white),
+        backgroundColor: WidgetStatePropertyAll(Colors.red),
         padding: WidgetStatePropertyAll(
             EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
         elevation: WidgetStatePropertyAll(10.0),

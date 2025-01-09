@@ -11,7 +11,7 @@ const Map<String, dynamic> home = {
   'widget': Home()
 };
 
-const Map<String, List<Map<String, dynamic>>> screenInfo = {
+final Map<String, List<Map<String, dynamic>>> screenInfo = {
   'guest': [
     home,
     {
@@ -30,7 +30,9 @@ const Map<String, List<Map<String, dynamic>>> screenInfo = {
     {
       'label': 'Expense',
       'icon': Icon(Icons.attach_money_outlined),
-      'widget': Expense(),
+      'widget': (appRef) {
+        return Expense(ref: appRef);
+      },
     },
     {
       'label': 'Profile',
@@ -42,14 +44,18 @@ const Map<String, List<Map<String, dynamic>>> screenInfo = {
 
 const lightColorScheme = ColorScheme(
   brightness: Brightness.light,
+  // primary: Color.fromARGB(255, 165, 222, 255),
+  // onPrimary: Color.fromARGB(255, 162, 189, 208),
+  // secondary: Color.fromARGB(245, 199, 196, 255),
+  // onSecondary: Color.fromARGB(255, 153, 252, 225),
   primary: Color.fromARGB(255, 154, 218, 254),
   onPrimary: Colors.white,
   secondary: Color.fromARGB(255, 221, 235, 247),
   onSecondary: Colors.white,
   error: Colors.red,
   onError: Colors.white,
-  background: Colors.white,
-  onBackground: Colors.black,
+  // background: Colors.white,
+  // onBackground: Colors.black,
   surface: Color.fromARGB(255, 237, 237, 237),
   onSurface: Colors.black,
 );
@@ -57,13 +63,16 @@ const lightColorScheme = ColorScheme(
 const darkColorScheme = ColorScheme(
   brightness: Brightness.dark,
   primary: Color.fromARGB(255, 24, 5, 90),
+  // onPrimary: Color.fromARGB(255, 31, 11, 112),
+  // secondary: Color.fromRGBO(116, 109, 250, 1),
+  // onSecondary: Color.fromARGB(255, 57, 14, 212),
   onPrimary: Colors.black,
   secondary: Color.fromRGBO(84, 79, 173, 1),
   onSecondary: Colors.black,
   error: Colors.red,
   onError: Colors.black,
-  background: Colors.black,
-  onBackground: Colors.white,
+  // background: Colors.black,
+  // onBackground: Colors.white,
   surface: Color.fromARGB(255, 109, 109, 109),
   onSurface: Colors.white,
 );

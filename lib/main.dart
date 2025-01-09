@@ -4,5 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(ProviderScope(child: MyApp()));
+  runApp(
+    ProviderScope(
+      child: Consumer(builder: (context, ref, child) {
+        return MyApp(ref: ref);
+      }),
+    ),
+  );
 }

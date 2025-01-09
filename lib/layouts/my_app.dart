@@ -5,24 +5,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:expense_tracker/providers/global_state_provider.dart';
 
-class MyApp extends ConsumerWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp(
       {super.key,
       this.childWidget,
       this.childWidgetTitle,
-      this.childWidgetContext});
+      this.childWidgetContext,
+      this.ref});
 
   final Widget? childWidget;
   final String? childWidgetTitle;
   final dynamic childWidgetContext;
+  final WidgetRef? ref;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final globalState = ref.watch(globalStateNotifierProvider);
-    final globalStateNotifier = ref.read(globalStateNotifierProvider.notifier);
+  MyAppState createState() => MyAppState();
+}
 
-    globalStateNotifier.loadInitialState();
+class MyAppState extends ConsumerState<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.ref != null) {
+      // final globalState = widget.ref!.watch(globalStateNotifierProvider);
+      final globalStateNotifier =
+          widget.ref!.read(globalStateNotifierProvider.notifier);
+      // load initial state from cache if existing
+      globalStateNotifier.loadInitialState();
+    }
+  }
 
+  @override
+  Widget build(
+    BuildContext context,
+  ) {
+    final globalState = widget.ref!.watch(globalStateNotifierProvider);
+    final globalStateNotifier =
+        widget.ref!.read(globalStateNotifierProvider.notifier);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
@@ -30,15 +49,16 @@ class MyApp extends ConsumerWidget {
       themeMode: globalState['isLight'] ? ThemeMode.light : ThemeMode.dark,
       home: Scaffold(
         appBar: AppBar(
-          leading: (childWidgetTitle != null
+          leading: (widget.childWidgetTitle != null
               ? IconButton(
-                  onPressed: () => Navigator.of(childWidgetContext).pop(),
+                  onPressed: () =>
+                      Navigator.of(widget.childWidgetContext).pop(),
                   icon: Icon(Icons.arrow_back_ios_new,
                       color:
                           globalState['isLight'] ? Colors.black : Colors.white))
               : null),
           title: Text(
-            childWidgetTitle ??
+            widget.childWidgetTitle ??
                 screenInfo[globalState['status']]
                     ?[globalState['selectedTabIndex']]['label'] ??
                 'Expense Tracker',
@@ -58,7 +78,7 @@ class MyApp extends ConsumerWidget {
                 globalStateNotifier
                     .updateGlobalState({'isLight': !globalState['isLight']});
               },
-            )
+            ),
           ],
         ),
         body: Center(
@@ -79,10 +99,17 @@ class MyApp extends ConsumerWidget {
                         borderRadius: BorderRadius.all(Radius.circular(16.0)),
                       ),
                       padding: const EdgeInsets.all(32.0),
-                      child: (childWidget ??
-                          (screenInfo[globalState['status']]
-                                      ?[globalState['selectedTabIndex']]
-                                  ['widget'] ??
+                      child: (widget.childWidget ??
+                          ((screenInfo[globalState['status']]
+                                              ?[globalState['selectedTabIndex']]
+                                          ['label'] ==
+                                      'Expense'
+                                  ? screenInfo[globalState['status']]![
+                                          globalState['selectedTabIndex']]
+                                      ['widget'](ref)
+                                  : screenInfo[globalState['status']]![
+                                          globalState['selectedTabIndex']]
+                                      ['widget']) ??
                               Home())),
                     ),
                   ),
@@ -92,7 +119,8 @@ class MyApp extends ConsumerWidget {
             ),
           ),
         ),
-        bottomNavigationBar: childWidgetTitle == null ? NavItems() : null,
+        bottomNavigationBar:
+            widget.childWidgetTitle == null ? NavItems() : null,
       ),
     );
   }

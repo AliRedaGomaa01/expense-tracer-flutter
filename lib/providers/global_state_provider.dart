@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:expense_tracker/utils/sqflite_helper.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class GlobalStateNotifier extends StateNotifier<Map<String, dynamic>> {
@@ -25,6 +26,15 @@ class GlobalStateNotifier extends StateNotifier<Map<String, dynamic>> {
 
     state =
         cachedGlobalState != null ? jsonDecode(cachedGlobalState) : {...state};
+
+    if (cachedGlobalState != null && state['auth']['token'] != {}) {
+      final String tokenExpiry = state['auth']['token']['expires_at'];
+      final DateTime tokenExpiryDateTime = DateTime.parse(tokenExpiry);
+      final DateTime currentTime = DateTime.now();
+      if (currentTime.isAfter(tokenExpiryDateTime)) {
+        logout();
+      }
+    }
   }
 
   Future<void> updateGlobalState(Map<String, dynamic> newState) async {
@@ -35,7 +45,7 @@ class GlobalStateNotifier extends StateNotifier<Map<String, dynamic>> {
   }
 
   Future<void> logout() async {
-    updateGlobalState({
+    await updateGlobalState({
       'auth': {
         'token': {},
         'user': {},

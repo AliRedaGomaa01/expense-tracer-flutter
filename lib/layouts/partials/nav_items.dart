@@ -19,9 +19,10 @@ class NavItems extends ConsumerWidget {
     return BottomNavigationBar(
       onTap: selectPage,
       type: BottomNavigationBarType.fixed,
-      backgroundColor: globalState['isLight']
-          ? lightColorScheme.onPrimary
-          : darkColorScheme.onPrimary,
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      unselectedItemColor:
+          Theme.of(context).colorScheme.onSurface.withAlpha(100),
+      selectedItemColor: Theme.of(context).colorScheme.onSurface,
       currentIndex: globalState['selectedTabIndex'] ?? 0,
       items: [
         BottomNavigationBarItem(

@@ -19,7 +19,7 @@ class Profile extends StatelessWidget {
           ref.read(globalStateNotifierProvider.notifier);
 
       final formContainerDecoration = BoxDecoration(
-        color: Theme.of(context).colorScheme.secondary,
+        color: Theme.of(context).colorScheme.onSecondary.withAlpha(100),
         borderRadius: BorderRadius.all(Radius.circular(8)),
         border: Border.all(color: Colors.grey, width: 2),
         boxShadow: [
