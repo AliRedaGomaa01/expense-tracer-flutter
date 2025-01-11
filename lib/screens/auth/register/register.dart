@@ -64,7 +64,6 @@ class RegisterState extends State<Register> {
           'status': 'auth',
           'selectedTabIndex': 0,
         });
-        Navigator.of(context).pushReplacementNamed('/home');
       } else if (response.statusCode == 200 &&
           responseData['status'] == 'error') {
         _setErrors(Map<String, List<String>>.from(responseData['errors']));

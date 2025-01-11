@@ -1,19 +1,6 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-// class Expense extends StatelessWidget {
-//   const Expense({super.key , required this.ref});
-//   final WidgetRef ref;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Center(
-//       child: Text('Expense'),
-//     );
-//   }
-// }
 import 'package:expense_tracker/constants/api_constants.dart';
 import 'package:expense_tracker/providers/global_state_provider.dart';
+import 'package:expense_tracker/screens/auth/verify_email/verify_email_first.dart';
 import 'package:expense_tracker/screens/expense/partials/expense_summary.dart';
 import 'package:expense_tracker/screens/expense/partials/expenses_show.dart';
 import 'package:expense_tracker/screens/expense/partials/index_search.dart';
@@ -21,12 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:expense_tracker/shared_widgets/loading.dart';
 import 'package:expense_tracker/screens/expense/partials/index_test.dart';
 import 'package:expense_tracker/screens/expense/partials/create_new_inputs.dart';
-// import 'package:expense_tracker/screens/expense/partials/index_search.dart';
-// import 'package:expense_tracker/screens/expense/partials/expense_summary.dart';
-// import 'package:expense_tracker/screens/expense/partials/expenses_show.dart';
 
 class Expense extends StatefulWidget {
   const Expense({super.key, required this.ref});
@@ -97,8 +80,8 @@ class ExpenseState extends State<Expense> {
   @override
   Widget build(BuildContext context) {
     final globalState = widget.ref.watch(globalStateNotifierProvider);
-    // final globalStateNotifier =
-    //     widget.ref.read(globalStateNotifierProvider.notifier);
+    final globalStateNotifier =
+        widget.ref.read(globalStateNotifierProvider.notifier);
 
     final widgetContainerDecoration = BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -113,6 +96,14 @@ class ExpenseState extends State<Expense> {
       ],
     );
 
+    if (globalState['auth']['user']['email_verified_at'] == null) {
+      return Container(
+        padding: EdgeInsets.all(16.0),
+        decoration: widgetContainerDecoration,
+        child: VerifyEmailFirst(ref: widget.ref),
+      );
+    }
+
     if (isLoading) {
       return Text('Loading ...');
     }
@@ -120,6 +111,7 @@ class ExpenseState extends State<Expense> {
     return loadingError != null
         ? Center(child: Text(loadingError!))
         : Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               if (globalState['auth']['user']['email'] == 'test@aly-h.com')
                 Container(
