@@ -27,7 +27,9 @@ class GlobalStateNotifier extends StateNotifier<Map<String, dynamic>> {
     state =
         cachedGlobalState != null ? jsonDecode(cachedGlobalState) : {...state};
 
-    if (cachedGlobalState != null && state['auth']['token'] != {}) {
+    if (cachedGlobalState != null &&
+        state['auth']['token'] != {} &&
+        state['auth']['token']['expires_at'] != null) {
       final String tokenExpiry = state['auth']['token']['expires_at'];
       final DateTime tokenExpiryDateTime = DateTime.parse(tokenExpiry);
       final DateTime currentTime = DateTime.now();
