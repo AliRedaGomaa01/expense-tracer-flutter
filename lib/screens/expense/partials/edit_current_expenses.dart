@@ -202,7 +202,7 @@ class EditCurrentExpensesState extends State<EditCurrentExpenses> {
         return Container(
           key: Key('${id.toString()}-expense-id'),
           margin: EdgeInsets.symmetric(vertical: 8),
-          padding: EdgeInsets.all(16),
+          padding: EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: index % 2 == 0
                 ? Theme.of(context).colorScheme.primary.withAlpha(200)

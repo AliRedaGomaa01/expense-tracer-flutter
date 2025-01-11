@@ -88,7 +88,7 @@ class MyAppState extends ConsumerState<MyApp> {
               children: [
                 SizedBox(height: 32),
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Center(
                     child: Container(
                       constraints: BoxConstraints(maxWidth: 600),
@@ -98,7 +98,7 @@ class MyAppState extends ConsumerState<MyApp> {
                             : darkColorScheme.primary,
                         borderRadius: BorderRadius.all(Radius.circular(16.0)),
                       ),
-                      padding: const EdgeInsets.all(32.0),
+                      padding: const EdgeInsets.all(8.0),
                       child: (widget.childWidget ??
                           ((screenInfo[globalState['status']]
                                               ?[globalState['selectedTabIndex']]

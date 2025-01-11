@@ -24,14 +24,18 @@ class _HomeState extends State<Home> {
           isConnected = true;
         });
       } else {
-        setState(() {
-          isConnected = false;
-        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('an error when check internet connection'),
+          ),
+        );
       }
     } catch (e) {
-      setState(() {
-        isConnected = false;
-      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('an error when check internet connection'),
+        ),
+      );
     }
   }
 

@@ -98,7 +98,7 @@ class ExpenseState extends State<Expense> {
 
     if (globalState['auth']['user']['email_verified_at'] == null) {
       return Container(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(8.0),
         decoration: widgetContainerDecoration,
         child: VerifyEmailFirst(ref: widget.ref),
       );
@@ -115,7 +115,7 @@ class ExpenseState extends State<Expense> {
             children: [
               if (globalState['auth']['user']['email'] == 'test@aly-h.com')
                 Container(
-                  padding: EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(8.0),
                   decoration: widgetContainerDecoration,
                   child: IndexTest(
                     loadData: () => loadData(widget.ref),
@@ -125,7 +125,7 @@ class ExpenseState extends State<Expense> {
               if (globalState['auth']['user']['email'] == 'test@aly-h.com')
                 SizedBox(height: 32),
               Container(
-                padding: EdgeInsets.all(16.0),
+                padding: EdgeInsets.all(8.0),
                 decoration: widgetContainerDecoration,
                 child: CreateNewInputs(
                   loadData: () => loadData(widget.ref),
@@ -135,7 +135,7 @@ class ExpenseState extends State<Expense> {
               ),
               SizedBox(height: 32),
               Container(
-                padding: EdgeInsets.all(16.0),
+                padding: EdgeInsets.all(8.0),
                 decoration: widgetContainerDecoration,
                 child: IndexSearch(
                   categories: fetchedData['categories'],
@@ -155,7 +155,7 @@ class ExpenseState extends State<Expense> {
               if (fetchedData['expenseData']?['startDate'] != null &&
                   fetchedData['expenseData']?['endDate'] != null)
                 Container(
-                  padding: EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(8.0),
                   decoration: widgetContainerDecoration,
                   child: ExpenseSummary(
                     expenseData: fetchedData['expenseData'],
@@ -164,7 +164,7 @@ class ExpenseState extends State<Expense> {
                 ),
               SizedBox(height: 32),
               Container(
-                padding: EdgeInsets.all(16.0),
+                padding: EdgeInsets.all(8.0),
                 decoration: widgetContainerDecoration,
                 child: fetchedData['dates']['data'].isEmpty
                     ? Row(

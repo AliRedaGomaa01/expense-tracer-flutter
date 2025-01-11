@@ -47,7 +47,6 @@ class CreateNewInputsState extends State<CreateNewInputs> {
         _date = pickedDate;
         _formattedDate =
             "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
-
       });
     }
   }
@@ -155,14 +154,14 @@ class CreateNewInputsState extends State<CreateNewInputs> {
           SizedBox(height: 32),
           PrimaryButton(
               buttonIcon: Icons.date_range,
-              buttonText: 'Click to pick a date',
+              buttonText: 'pick a date',
               buttonOnPressed: () => _pickDate(context)),
           SizedBox(height: 16),
           PrimaryButton(
             buttonIcon: Icons.date_range,
             buttonText: _date == null
                 ? "No selected date"
-                : "Selected date is: ${_date!.day > 9 ? '' : '0'}${_date!.day}-${_date!.month > 9 ? '' : '0'}${_date!.month}-${_date!.year}",
+                : "${_date!.year}-${_date!.month > 9 ? '' : '0'}${_date!.month}-${_date!.day > 9 ? '' : '0'}${_date!.day}",
             buttonOnPressed: () {},
           ),
           if (_errors.containsKey('date')) SizedBox(height: 16),
@@ -175,7 +174,7 @@ class CreateNewInputsState extends State<CreateNewInputs> {
               padding:
                   const EdgeInsets.symmetric(vertical: 16.0, horizontal: 0.0),
               child: Container(
-                padding: EdgeInsets.all(16),
+                padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey[300]!),
                   borderRadius: BorderRadius.circular(8),
@@ -248,7 +247,7 @@ class CreateNewInputsState extends State<CreateNewInputs> {
             children: [
               PrimaryButton(
                   buttonIcon: Icons.edit,
-                  buttonText: "Add New Expense Field",
+                  buttonText: "Add New Field",
                   buttonOnPressed: _addNewExpense),
               PrimaryButton(
                   buttonIcon: Icons.done,

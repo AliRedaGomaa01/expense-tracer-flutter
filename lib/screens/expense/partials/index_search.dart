@@ -171,31 +171,27 @@ class IndexSearchState extends State<IndexSearch> {
           SizedBox(height: 32),
           PrimaryButton(
               buttonIcon: Icons.date_range,
-              buttonText: 'Click to pick a start date',
+              buttonText: 'pick start date',
               buttonOnPressed: () => _pickStartDate(context)),
           SizedBox(height: 16),
           PrimaryButton(
             buttonIcon: Icons.date_range,
             buttonColor:
                 _startDate == '' ? Colors.pink : Colors.green.withAlpha(50),
-            buttonText: _startDate == ''
-                ? "No selected start date"
-                : "The selected is: $_startDate",
+            buttonText: _startDate == '' ? "No selected date" : "$_startDate",
             buttonOnPressed: () {},
           ),
           SizedBox(height: 32),
           PrimaryButton(
               buttonIcon: Icons.date_range,
-              buttonText: 'Click to pick a end date',
+              buttonText: 'pick end date',
               buttonOnPressed: () => _pickEndDate(context)),
           SizedBox(height: 16),
           PrimaryButton(
             buttonIcon: Icons.date_range,
             buttonColor:
                 _endDate == '' ? Colors.pink : Colors.green.withAlpha(50),
-            buttonText: _endDate == ''
-                ? "No selected end date"
-                : "The selected is: $_endDate",
+            buttonText: _endDate == '' ? "No selected date" : "$_endDate",
             buttonOnPressed: () {},
           ),
           SizedBox(height: 32),
