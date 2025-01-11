@@ -20,8 +20,10 @@ class DeleteUserFormState extends State<DeleteUserForm> {
   bool _showPassword = false;
   Map _errors = {};
 
-  void _handleDelete(Map<String, dynamic> globalState,
-      GlobalStateNotifier globalStateNotifier, context) async {
+  void _handleDelete(WidgetRef ref, context) async {
+    final globalState = ref.watch(globalStateNotifierProvider);
+    final globalStateNotifier = ref.read(globalStateNotifierProvider.notifier);
+
     setState(() {
       _isDeleting = true;
     });
@@ -41,14 +43,10 @@ class DeleteUserFormState extends State<DeleteUserForm> {
       final data = jsonDecode(response.body);
 
       if (data['status'] == 'success') {
-        // Handle successful deletion (e.g., log out and navigate to login screen)
         globalStateNotifier.logout();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Account deleted successfully.')),
         );
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-          return MyApp();
-        }));
       } else if (data['status'] == 'error') {
         setState(() {
           _errors = data['errors'];
@@ -140,8 +138,7 @@ class DeleteUserFormState extends State<DeleteUserForm> {
                         child: Text('Delete'),
                         onPressed: () {
                           Navigator.of(alertContext).pop();
-                          _handleDelete(
-                              globalState, globalStateNotifier, context);
+                          _handleDelete(ref, context);
                         },
                       ),
                     ],
