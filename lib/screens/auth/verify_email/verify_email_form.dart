@@ -1,5 +1,4 @@
 import 'package:expense_tracker/constants/api_constants.dart';
-import 'package:expense_tracker/layouts/my_app.dart';
 import 'package:expense_tracker/providers/global_state_provider.dart';
 import 'package:expense_tracker/shared_widgets/primary_button.dart';
 import 'package:flutter/material.dart';
