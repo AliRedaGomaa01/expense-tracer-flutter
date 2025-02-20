@@ -66,11 +66,8 @@ class UpdateProfileInformationFormState
         if (data['status'] == 'success') {
           globalStateNotifier.updateGlobalState({
             'auth': {
-              'token': globalState['auth']['token'],
-              'user': {
-                'name': nameController.text,
-                'email': emailController.text,
-              },
+              ...globalState['auth'],
+              'user': data['data']['user'],
             },
           });
           ScaffoldMessenger.of(context).showSnackBar(

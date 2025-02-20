@@ -16,13 +16,16 @@ class _HomeState extends State<Home> {
 
   Future<void> pingWebsite() async {
     try {
-      final response = await http
-          .get(Uri.parse('https://google.com'))
-          .timeout(const Duration(seconds: 3));
+      final response = await http.get(
+        Uri.parse('$API_URL/mobile-app-version'),
+        headers: {'Accept': 'application/json'},
+      );
       if (response.statusCode == 200) {
-        setState(() {
-          isConnected = true;
-        });
+        if (mounted) {
+          setState(() {
+            isConnected = true;
+          });
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
